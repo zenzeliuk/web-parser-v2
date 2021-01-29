@@ -1,9 +1,10 @@
 package ua.mainacademy;
 
 
-import org.jsoup.nodes.Document;
 import ua.mainacademy.parser.ItemPageParser;
 import ua.mainacademy.service.DocumentExtractorService;
+
+import java.util.Map;
 
 public class ApplicationRun {
     public static void main(String[] args) {
@@ -12,8 +13,14 @@ public class ApplicationRun {
         DocumentExtractorService documentExtractorService = new DocumentExtractorService();
 
         ItemPageParser aa = new ItemPageParser();
-
         System.out.println(aa.getItemFromPage(url, documentExtractorService.getDocument(url)));
+
+        Map spec = aa.getItemFromPage(url, documentExtractorService.getDocument(url)).getSpecifications();
+        String height = "";
+        height = spec.get("Высота:").toString();
+        System.out.println(String.format("Высота: %s", height));
+
+
         System.out.println(ItemPageParser.isItemPage(documentExtractorService.getDocument(url)));
     }
 }

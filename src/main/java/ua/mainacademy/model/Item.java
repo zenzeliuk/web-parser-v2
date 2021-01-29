@@ -2,6 +2,8 @@ package ua.mainacademy.model;
 
 import lombok.*;
 
+import java.util.HashMap;
+
 @Setter
 @Getter
 @Builder
@@ -15,6 +17,6 @@ public class Item {
     private String url;
     private String imageUrl;
     private String group;
-    private String specifications;
+    private HashMap specifications;
 
 }
