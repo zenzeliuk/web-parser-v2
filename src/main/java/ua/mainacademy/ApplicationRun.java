@@ -7,8 +7,12 @@ import ua.mainacademy.service.RouterService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ApplicationRun {
+
+    private static final Logger LOGGER = Logger.getLogger(ApplicationRun.class.getName());
+
     public static void main(String[] args) {
 
         String url = "https://www.iek.ru/products/catalog/shkafy_boksy_i_prinadlezhnosti_k_nim/obolochki_metallicheskie/korpusa_metallicheskie_shchmp/";
@@ -28,7 +32,8 @@ public class ApplicationRun {
             }
         } while (!threadsAreNotActive(threads));
 
-        System.out.println("Items were extracted. Amount=" + items.size());
+        LOGGER.info(String.format("Items were extracted. Amount = %s", items.size()));
+
 
     }
 
