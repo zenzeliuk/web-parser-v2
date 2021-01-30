@@ -30,12 +30,10 @@ public class ApplicationRun {
 
         System.out.println("Items were extracted. Amount=" + items.size());
 
-//
-        for (Item item : items) {
-            System.out.println(item.getName() + " " + item.getUrl());
-        }
-
     }
+
+
+
 
     private static boolean threadsAreNotActive(List<Thread> threads) {
         for (Thread thread : threads) {

@@ -32,5 +32,6 @@ public class RouterService extends Thread {
             NavigationPageParser navigationPageParser = new NavigationPageParser(items, threads, document, url);
             navigationPageParser.start();
         }
+
     }
 }
