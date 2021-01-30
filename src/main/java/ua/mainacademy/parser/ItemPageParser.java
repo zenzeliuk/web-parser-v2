@@ -1,5 +1,6 @@
 package ua.mainacademy.parser;
 
+import lombok.AllArgsConstructor;
 import org.jsoup.internal.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,16 +11,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ItemPageParser {
+@AllArgsConstructor
+public class ItemPageParser extends Thread {
 
-    public static boolean isItemPage(Document document) {
-        String extractCode = document.getElementsByClass("iek-prodcat-catalog-detail-article-wrap").first()
-                .getElementsByTag("span").text();
-        ;
-        return extractCode.contains("Артикул");
+    private List<Item> items;
+    private Document document;
+    private String url;
+
+    @Override
+    public void run() {
+        items.add(getItemFromPage(url));
     }
 
-    public static Item getItemFromPage(String url, Document document) {
+    public static boolean isItemPage(Document document) {
+        return !document.getElementsByClass("iek-prodcat-catalog-detail-article-wrap").isEmpty();
+    }
+
+    public Item getItemFromPage(String url) {
         Element productBlock = document.getElementById("content");
         Element navigationBlock = document.getElementById("navstr");
 

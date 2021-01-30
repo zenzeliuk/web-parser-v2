@@ -1,26 +1,58 @@
 package ua.mainacademy;
 
 
-import ua.mainacademy.parser.ItemPageParser;
-import ua.mainacademy.service.DocumentExtractorService;
+import ua.mainacademy.model.Item;
+import ua.mainacademy.service.RouterService;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ApplicationRun {
     public static void main(String[] args) {
 
-        String url = "https://www.iek.ru/products/catalog/shkafy_boksy_i_prinadlezhnosti_k_nim/korpusa_metallicheskie_modulnye/korpusa_metallicheskie_raspredelitelnye/shchity_racpredelitelnye_serii_pro/shchrn_serii_pro_ip31/korpus_metallicheskiy_raspredelitelnyy_shchrn_2x24z_0_36_ukhl3_ip31_pro_iek";
-        DocumentExtractorService documentExtractorService = new DocumentExtractorService();
+        String url = "https://www.iek.ru/products/catalog/shkafy_boksy_i_prinadlezhnosti_k_nim/obolochki_metallicheskie/korpusa_metallicheskie_shchmp/";
 
-        ItemPageParser aa = new ItemPageParser();
-        System.out.println(aa.getItemFromPage(url, documentExtractorService.getDocument(url)));
+        List<Item> items = Collections.synchronizedList(new ArrayList<>());
+        List<Thread> threads = Collections.synchronizedList(new ArrayList<>());
 
-        Map spec = aa.getItemFromPage(url, documentExtractorService.getDocument(url)).getSpecifications();
-        String height = "";
-        height = spec.get("Высота:").toString();
-        System.out.println(String.format("Высота: %s", height));
+        RouterService routerService = new RouterService(items, threads, url);
+        threads.add(routerService);
+        routerService.start();
 
+        do {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } while (!threadsAreNotActive(threads));
 
-        System.out.println(ItemPageParser.isItemPage(documentExtractorService.getDocument(url)));
+        System.out.println("Items were extracted. Amount=" + items.size());
+
+//
+        for (Item item : items) {
+            System.out.println(item.getName() + " " + item.getUrl());
+        }
+
+    }
+
+    private static boolean threadsAreNotActive(List<Thread> threads) {
+        for (Thread thread : threads) {
+            if (thread.isAlive() || thread.getState().equals(Thread.State.NEW)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
+
+
+
+
+
+
+
+
+
+
